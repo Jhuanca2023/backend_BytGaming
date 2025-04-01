@@ -1,4 +1,4 @@
-package gaming.pe.Entity;
+package gaming.pe.Enums;
 
 public enum MetodoPago {
     TARJETA, PAYPAL, TRANSFERENCIA

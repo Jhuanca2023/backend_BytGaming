@@ -22,8 +22,8 @@ private String nombre;
 @Column(name = "Des_Rol", nullable = false)
 private String descripcion;
 
-@OneToMany(mappedBy ="roles")
-private List<Users> usuario;
+//@OneToMany(mappedBy ="roles")
+//private List<Users> usuario;
 
 public Roles() {
 	super();
@@ -34,7 +34,7 @@ public Roles(int idRol, String nombre, String descripcion, List<Users> usuario) 
 	IdRol = idRol;
 	this.nombre = nombre;
 	this.descripcion = descripcion;
-	this.usuario = usuario;
+	//this.usuario = usuario;
 }
 
 public int getIdRol() {
@@ -61,12 +61,12 @@ public void setDescripcion(String descripcion) {
 	this.descripcion = descripcion;
 }
 
-public List<Users> getUsuario() {
-	return usuario;
-}
+//ublic List<Users> getUsuario() {
+	//return usuario;
+//}
 
-public void setUsuario(List<Users> usuario) {
-	this.usuario = usuario;
-}
+//public void setUsuario(List<Users> usuario) {
+//	this.usuario = usuario;
+//}
 
 }

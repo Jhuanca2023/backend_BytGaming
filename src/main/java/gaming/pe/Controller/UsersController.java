@@ -5,6 +5,7 @@ import gaming.pe.DTOs.auth.AuthLoginRequestDto;
 import gaming.pe.DTOs.auth.AuthResponseDto;
 import gaming.pe.Service.Impl.UserDetailServiceImpl;
 import jakarta.validation.Valid;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class UsersController {
     private UserDetailServiceImpl userDetailService;
 
     @PostMapping("/sign-up")
-    public ResponseEntity<AuthResponseDto> register(@RequestBody @Valid AuthCreateUserRequestDto userRequest){
+    public ResponseEntity<AuthResponseDto> register(@RequestBody @Valid AuthCreateUserRequestDto userRequest) throws BadRequestException {
         return new ResponseEntity<>(this.userDetailService.createUser(userRequest), HttpStatus.CREATED);
     }
 

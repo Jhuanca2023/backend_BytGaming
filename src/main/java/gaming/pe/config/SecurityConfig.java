@@ -1,4 +1,4 @@
-package gaming.pe.config;
+ package gaming.pe.config;
 
 import gaming.pe.Service.Impl.UserDetailServiceImpl;
 import gaming.pe.config.jwt.JwtTokenValidator;

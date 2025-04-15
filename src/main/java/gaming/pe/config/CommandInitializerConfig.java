@@ -44,7 +44,7 @@ public class CommandInitializerConfig implements CommandLineRunner {
 
             RoleEntity adminRole = RoleEntity.builder()
                     .roleEnum(RoleEnum.ADMIN)
-                    .build();;
+                    .build();
 //            adminRole.setPermissions(allPermissions);
             roleRepository.save(adminRole);
 

@@ -1,5 +1,6 @@
 package gaming.pe.Entity;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -21,24 +22,27 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name="tbl_productos")
 public class Productos {
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-private int IdProducto;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-@Column(name = "Nombre_Pro", nullable = false)
-private String nombre;
+    private String nombre;
+    private String descripcion;
+    private BigDecimal precio;
+    private int stock;
 
-@Column(name = "Des_Pro", nullable = false)
-private String descripcion;
+    @ManyToOne
+    @JoinColumn(name = "categoria_id")
+    private Categorias categoria;
 
-@Column(name = "precio", nullable = false)
-private Double precio;
 
-@Column(name = "Stock", nullable = false)
-private int stock;
+    @OneToMany(mappedBy = "producto")
+    private List<ComentariosProducto> comentarios;
 
-@ManyToOne
-@JoinColumn(name ="categoria_id",nullable = false)
-private Categorias categoria;
+    @OneToMany(mappedBy = "producto")
+    private List<DetalleCarrito> detallesCarrito;
+
+    @OneToMany(mappedBy = "producto")
+    private List<DetalleOrdenes> detallesOrden;
 
 }

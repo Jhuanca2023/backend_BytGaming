@@ -1,46 +1,32 @@
 package gaming.pe.Entity;
 
-import java.util.Date;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="tbl_Comentarios_Producto")
+@Builder
 public class ComentariosProducto {
-	
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-private int IdCome_Pro;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-@ManyToOne
-@JoinColumn(name="producto_id",nullable=false)
-private Productos producto;
+    @ManyToOne
+    @JoinColumn(name = "producto_id")
+    private Productos producto;
 
-@ManyToOne
-@JoinColumn(name="usuario_id",nullable=false)
-private UserEntity usuario;
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private UserEntity usuario;
 
-@Column(name = "Comentarios", nullable = false)
-private String comentario;
-
-@Column(name = "Puntuacion", nullable = false)
-private int puntuacion;
-
-@Column(name = "Fecha", nullable = false)
-private Date fecha;
-
-
+    private String comentario;
+    private int puntuacion;
+    private LocalDate fecha;
 }

@@ -43,8 +43,10 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
         List<SimpleGrantedAuthority> authorityList = new ArrayList<>();
 
-//        userEntity.getRoles().forEach(role -> authorityList.add(new SimpleGrantedAuthority("ROLE_".concat(role.getRoleEnum().name()))));
-          userEntity.getRole().getRoleEnum().name();
+        authorityList.add(new SimpleGrantedAuthority("ROLE_" + userEntity.getRole().getRoleEnum().name()));
+        //new SimpleGrantedAuthority("ROLE_" + userEntity.getRole().getRoleEnum().name()) ;
+        //userEntity.getRole() .forEach(role -> authorityList.add(new SimpleGrantedAuthority("ROLE_".concat(role.getRoleEnum().name()))));
+
 //        userEntity.getRoles().stream().flatMap(role -> role.getPermissionList().stream()).forEach(permission -> authorityList.add(new SimpleGrantedAuthority(permission.getName())));
 
 
@@ -99,6 +101,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
         String password = authLoginRequest.password();
 
         Authentication authentication = this.authenticate(email, password);
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String accessToken = jwtUtils.createToken(authentication);

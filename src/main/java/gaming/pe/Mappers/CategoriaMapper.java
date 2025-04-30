@@ -1,18 +1,16 @@
 package gaming.pe.Mappers;
 
 import gaming.pe.DTO.CategoriaDTO;
-import gaming.pe.Entity.Categorias;
+import gaming.pe.Entity.Category;
+import gaming.pe.config.CommonMapperConfig;
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(config = CommonMapperConfig.class)
 public interface CategoriaMapper {
-    CategoriaMapper INSTANCE = Mappers.getMapper(CategoriaMapper.class);
+    CategoriaDTO toDto(Category category);
+    Category toEntity(CategoriaDTO category);
 
-    CategoriaDTO toDto(Categorias categoria);
-    Categorias toEntity(CategoriaDTO categoriaDTO);
-
-    List<CategoriaDTO> toDtoList(List<Categorias> categorias);
+    List<CategoriaDTO> toDtoList(List<Category> category);
 }

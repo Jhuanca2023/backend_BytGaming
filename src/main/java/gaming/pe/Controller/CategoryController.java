@@ -1,7 +1,7 @@
 package gaming.pe.Controller;
 
 import gaming.pe.DTO.CategoriaDTO;
-import gaming.pe.Service.CategoriaService;
+import gaming.pe.Service.Impl.CategoriaService;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +24,7 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CategoriaDTO> obtenerCategoriaPorId(@PathVariable Integer id) {
+    public ResponseEntity<CategoriaDTO> obtenerCategoriaPorId(@PathVariable Long id) {
         return categoriaService.listarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -37,14 +37,14 @@ public class CategoryController {
     }
     @Transactional
     @PutMapping("/{id}")
-    public ResponseEntity<CategoriaDTO> actualizarCategoria(@PathVariable Integer id, @RequestBody CategoriaDTO categoriaDTO) {
+    public ResponseEntity<CategoriaDTO> actualizarCategoria(@PathVariable Long id, @RequestBody CategoriaDTO categoriaDTO) {
         categoriaDTO.setId(id);
         CategoriaDTO categoriaActualizada = categoriaService.editar(categoriaDTO);
         return ResponseEntity.ok(categoriaActualizada);
     }
     @Transactional
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarCategoria(@PathVariable Integer id) {
+    public ResponseEntity<Void> eliminarCategoria(@PathVariable Long id) {
         categoriaService.eliminar(id);
         return ResponseEntity.noContent().build();
     }

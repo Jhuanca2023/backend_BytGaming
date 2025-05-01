@@ -1,53 +1,60 @@
 package gaming.pe.Service.Impl;
 
-import gaming.pe.DTO.CategoriaDTO;
+import gaming.pe.DTO.CategoryDTO;
 import gaming.pe.Entity.Category;
-import gaming.pe.Mappers.CategoriaMapper;
+import gaming.pe.Mappers.CategoryMapper;
 import gaming.pe.Repository.CategoryRepository;
 import gaming.pe.Service.ICategoriaService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class CategoriaService implements ICategoriaService {
 
-    private final CategoryRepository categoriaRepository;
-    private final CategoriaMapper categoriaMapper;
+
+    private final CategoryRepository repository;
+    private final CategoryMapper categoryMapper;
+
+
 
     @Override
-    public List<CategoriaDTO> listar() {
-        List<Category> categorias = categoriaRepository.findAll();
-        return categoriaMapper.toDtoList(categorias);
+    public List<Category> FindAll() {
+        return repository.findAll();
     }
 
     @Override
-    public Optional<CategoriaDTO> listarPorId(Long id) {
-        return categoriaRepository.findById(id)
-                .map(categoriaMapper::toDto);
+    public Optional<Category> FindById(Long id) {
+        return repository.findById(id);
     }
 
     @Override
-    public CategoriaDTO crear(CategoriaDTO categoriaDTO) {
-        // Convertir de DTO a entidad
-        Category entidad = categoriaMapper.toEntity(categoriaDTO);
-        Category guardada = categoriaRepository.save(entidad);
-        return categoriaMapper.toDto(guardada);
-    }
+    public Category create(CategoryDTO categoriaDTO) {
+        Category category = categoryMapper.toEntity(categoriaDTO);
 
-
-    @Override
-    public CategoriaDTO editar(CategoriaDTO categoriaDTO) {
-        Category entidad = categoriaMapper.toEntity(categoriaDTO);
-        Category editada = categoriaRepository.save(entidad);
-        return categoriaMapper.toDto(editada);
+        return repository.save(category);
     }
 
     @Override
-    public void eliminar(Long id) {
-        categoriaRepository.deleteById(id);
+    public Category update(Long id,CategoryDTO dto) {
+        Category category = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Categoría no encontrada con ID: " + id));
+
+        categoryMapper.updateFromDto(dto, category);
+
+        return repository.save(category);
+    }
+
+    @Override
+    public void delete(Long id) {
+        Category category = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Categoría no encontrada con ID: " + id));
+
+        repository.delete(category);
     }
 }

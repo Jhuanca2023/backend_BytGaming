@@ -1,23 +1,16 @@
-package gaming.pe.Entity;
-
-import jakarta.persistence.*;
-
-import java.util.List;
+package gaming.pe.DTO;
 
 
-@Entity
-public class Category {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+
+public class CategoryDTO {
     private Long id;
-
     private String nombre;
     private String description;
 
-    public Category() {
-    }
+    public CategoryDTO() {}
 
-    public Category(Long id, String nombre, String description) {
+    public CategoryDTO(Long id, String nombre, String description) {
         this.id = id;
         this.nombre = nombre;
         this.description = description;
@@ -47,4 +40,3 @@ public class Category {
         this.description = description;
     }
 }
-

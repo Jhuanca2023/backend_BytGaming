@@ -1,8 +1,9 @@
 package gaming.pe.Service.Impl;
 
-import gaming.pe.DTOs.auth.AuthCreateUserRequestDto;
-import gaming.pe.DTOs.auth.AuthLoginRequestDto;
-import gaming.pe.DTOs.auth.AuthResponseDto;
+
+import gaming.pe.DTO.Auth.AuthCreateUserRequestDto;
+import gaming.pe.DTO.Auth.AuthLoginRequestDto;
+import gaming.pe.DTO.Auth.AuthResponseDto;
 import gaming.pe.Entity.RoleEntity;
 import gaming.pe.Entity.UserEntity;
 import gaming.pe.Enums.RoleEnum;

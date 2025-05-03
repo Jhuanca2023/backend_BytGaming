@@ -2,9 +2,13 @@ package gaming.pe.Service.Impl;
 
 import gaming.pe.DTO.KardexDTO;
 import gaming.pe.Entity.Kardex;
+import gaming.pe.Entity.Product;
+import gaming.pe.Entity.Staff;
 import gaming.pe.Entity.Supplier;
 import gaming.pe.Mappers.KardexMapper;
 import gaming.pe.Repository.KardexRepository;
+import gaming.pe.Repository.ProductRepository;
+import gaming.pe.Repository.StaffRepository;
 import gaming.pe.Repository.SupplierRepository;
 import gaming.pe.Service.IKardexService;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +22,10 @@ import java.util.Optional;
 public class KardexServiceImpl implements IKardexService {
 
     private final KardexRepository kardexRepository;
+    private final ProductRepository productRepository;
     private final SupplierRepository supplierRepository;
-    private final KardexMapper mapper;
+    private final StaffRepository staffRepository;
+    private final KardexMapper kardexMapper;
 
 
 
@@ -34,33 +40,32 @@ public class KardexServiceImpl implements IKardexService {
     }
 
     @Override
-    public Kardex create(KardexDTO dto) {
-        Supplier supplier = supplierRepository.findById(dto.getSupplierId())
-                .orElseThrow(() -> new RuntimeException("Proveedor no encontrado"));
+    public KardexDTO create(KardexDTO dto) {
+        Kardex kardex = kardexMapper.toEntity(dto);
+        kardex.setProduct(getProductById(dto.getProductId()));
+        kardex.setProvider(getSupplierById(dto.getSupplierId()));
+        kardex.setStaff(getStaffById(dto.getStaffId()));
 
-        Kardex kardex = mapper.toEntity(dto);
-
-        kardex.setSupplier(supplier);
-
-        return kardexRepository.save(kardex);
+        Kardex saved = kardexRepository.save(kardex);
+        return kardexMapper.toDto(saved);
     }
 
+
     @Override
-    public Kardex update(Long id, KardexDTO dto) {
+    public KardexDTO update(Long id, KardexDTO dto) {
         Kardex existing = kardexRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Kardex no encontrado con ID: " + id));
+                .orElseThrow(() -> new RuntimeException("Kardex no encontrado"));
 
-        existing.setDateOperation(dto.getDateOperation());
-        existing.setExpirationDate(dto.getExpirationDate());
-        existing.setCount(dto.getCount());
-        existing.setDescription(dto.getDescription());
-        existing.setProductName(dto.getProductName());
+        // Actualizar campos desde el DTO
+        kardexMapper.updateFromDto(dto, existing);
 
-        Supplier supplier = supplierRepository.findById(dto.getSupplierId())
-                .orElseThrow(() -> new RuntimeException("Proveedor no encontrado con ID: " + dto.getSupplierId()));
-        existing.setSupplier(supplier);
+        // Actualizar relaciones
+        existing.setProduct(getProductById(dto.getProductId()));
+        existing.setProvider(getSupplierById(dto.getSupplierId()));
+        existing.setStaff(getStaffById(dto.getStaffId()));
 
-        return kardexRepository.save(existing);
+        Kardex updated = kardexRepository.save(existing);
+        return kardexMapper.toDto(updated);
     }
 
     @Override
@@ -69,5 +74,19 @@ public class KardexServiceImpl implements IKardexService {
                 .orElseThrow(() -> new RuntimeException("Kardex no encontrado con ID: " + id));
 
         kardexRepository.delete(kardex);
+    }
+    private Product getProductById(Long id) {
+        return productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+    }
+
+    private Supplier getSupplierById(Long id) {
+        return supplierRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Proveedor no encontrado"));
+    }
+
+    private Staff getStaffById(Long id) {
+        return staffRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Staff no encontrado"));
     }
 }

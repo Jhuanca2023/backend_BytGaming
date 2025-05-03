@@ -8,8 +8,8 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface KardexMapper {
-    KardexDTO toDto(Kardex category);
-    Kardex toEntity(KardexDTO category);
+    KardexDTO toDto(Kardex kardex);
+    Kardex toEntity(KardexDTO kardexDTO);
 
     void updateFromDto(KardexDTO dto, @MappingTarget Kardex entity);
 }

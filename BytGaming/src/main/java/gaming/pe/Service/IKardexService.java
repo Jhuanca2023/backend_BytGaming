@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface IKardexService {
     List<Kardex> findAll();
     Optional<Kardex> FindById(Long id);
-    Kardex create(KardexDTO categoriaDTO);
-    Kardex update(Long id,KardexDTO dto);
+    KardexDTO create(KardexDTO dto);
+    KardexDTO update(Long id,KardexDTO dto);
     void delete(Long id);
 }

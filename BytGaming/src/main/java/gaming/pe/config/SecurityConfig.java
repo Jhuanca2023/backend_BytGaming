@@ -35,6 +35,11 @@ public class SecurityConfig {
                     http.requestMatchers(  "/v3/api-docs/**",
                             "/swagger-ui/**",
                             "/swagger-ui.html",
+                            "/api/suppliers/**",
+                            "/api/category/**",
+                            "/api/products/**",
+                            "/api/staff/**",
+                            "/api/kardex/**",
                             "/swagger-ui/index.html","/auth/**","/").permitAll();
 
                     // EndPoints Privados
@@ -42,6 +47,8 @@ public class SecurityConfig {
                     http.requestMatchers(HttpMethod.POST, "/method/post").hasAuthority("CREATE");
                     http.requestMatchers(HttpMethod.DELETE, "/method/delete").hasAuthority("DELETE");
                     http.requestMatchers(HttpMethod.PUT, "/method/put").hasAuthority("UPDATE");
+
+                    http.requestMatchers("/api/cart/**").authenticated();
 
                     http.anyRequest().denyAll();
                 })

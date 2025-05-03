@@ -1,0 +1,37 @@
+server:
+  port: 8081   #Puerto de Gateway 👌👌👌👌👌👌👌👌👌👌👌👌👌👌👌
+
+spring:
+  cloud:
+    gateway:
+      default-filters:
+        - StripPrefix=1      # /gateway/{path} → /{path}
+      routes:
+        - id: auth
+          uri: http://localhost:8080
+          predicates:
+            - Path=/auth/**   # POST /auth/sign-up, /auth/log-in
+        - id: cart
+          uri: http://localhost:8080
+          predicates:
+            - Path=/api/cart/**   # GET, POST, DELETE /api/cart and /api/cart/{productId}
+        - id: products
+          uri: http://localhost:8080
+          predicates:
+            - Path=/api/products/**   # CRUD Productos (+ imagen)
+        - id: category
+          uri: http://localhost:8080
+          predicates:
+            - Path=/api/category/**   # CRUD Categorías
+        - id: suppliers
+          uri: http://localhost:8080
+          predicates:
+            - Path=/api/suppliers/**  # CRUD Proveedores
+        - id: staff
+          uri: http://localhost:8080
+          predicates:
+            - Path=/api/staff/**      # CRUD Staff
+        - id: kardex
+          uri: http://localhost:8080
+          predicates:
+            - Path=/api/kardex/**     # CRUD Kardex

@@ -1,93 +1,48 @@
 package gaming.pe.Entity;
 
+import gaming.pe.Enums.MovementType;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
+@Table(name = "kardex")
 public class Kardex {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDate dateOperation;
-    private LocalDate expirationDate;
-    private Integer count;
-    private String description;
-    private String productName;
+
     @ManyToOne
-    @JoinColumn(name = "supplier_id", nullable = false)
-    private Supplier supplier;
-//    @ManyToOne
-//    @JoinColumn(name = "user_id", nullable = false)
-//    private User user;
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    private Product product;
 
-    public Kardex() {
-    }
+    private Integer quantity;
 
-    public Kardex(LocalDate dateOperation, Long id, LocalDate expirationDate, Integer count, String description, String productName, Supplier supplier) {
-        this.dateOperation = dateOperation;
-        this.id = id;
-        this.expirationDate = expirationDate;
-        this.count = count;
-        this.description = description;
-        this.productName = productName;
-        this.supplier = supplier;
-    }
+    @Enumerated(EnumType.STRING)
+    private MovementType movementType;
 
-    public Long getId() {
-        return id;
-    }
+    private LocalDateTime date;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private BigDecimal cost;
 
-    public LocalDate getDateOperation() {
-        return dateOperation;
-    }
+    private Integer balance;
 
-    public void setDateOperation(LocalDate dateOperation) {
-        this.dateOperation = dateOperation;
-    }
+    @ManyToOne
+    @JoinColumn(name = "Supplier_id", referencedColumnName = "id")
+    private Supplier provider;  // Relación con el proveedor
 
-    public LocalDate getExpirationDate() {
-        return expirationDate;
-    }
+    @ManyToOne
+    @JoinColumn(name = "staff_id", referencedColumnName = "id")
+    private Staff staff;  // Relación con el empleado (staff)
 
-    public void setExpirationDate(LocalDate expirationDate) {
-        this.expirationDate = expirationDate;
-    }
-
-    public Integer getCount() {
-        return count;
-    }
-
-    public void setCount(Integer count) {
-        this.count = count;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public Supplier getSupplier() {
-        return supplier;
-    }
-
-    public void setSupplier(Supplier supplier) {
-        this.supplier = supplier;
-    }
 }

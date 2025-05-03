@@ -1,82 +1,24 @@
 package gaming.pe.DTO;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class KardexDTO {
-    private Long id;
-    private LocalDate dateOperation;
-    private LocalDate expirationDate;
-    private Integer count;
-    private String description;
-    private String productName;
+    private Long productId;
+    private Integer quantity;
+    private String movementType; // o MovementType
+    private LocalDateTime date;
+    private BigDecimal cost;
+    private Integer balance;
     private Long supplierId;
+    private Long staffId;
 
-    public KardexDTO() {
-    }
-
-    public KardexDTO(Long id, LocalDate dateOperation, LocalDate expirationDate, Integer count, String description, String productName, Long supplierId) {
-        this.id = id;
-        this.dateOperation = dateOperation;
-        this.expirationDate = expirationDate;
-        this.count = count;
-        this.description = description;
-        this.productName = productName;
-        this.supplierId = supplierId;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public LocalDate getDateOperation() {
-        return dateOperation;
-    }
-
-    public void setDateOperation(LocalDate dateOperation) {
-        this.dateOperation = dateOperation;
-    }
-
-    public LocalDate getExpirationDate() {
-        return expirationDate;
-    }
-
-    public void setExpirationDate(LocalDate expirationDate) {
-        this.expirationDate = expirationDate;
-    }
-
-    public Integer getCount() {
-        return count;
-    }
-
-    public void setCount(Integer count) {
-        this.count = count;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public Long getSupplierId() {
-        return supplierId;
-    }
-
-    public void setSupplierId(Long supplierId) {
-        this.supplierId = supplierId;
-    }
 }

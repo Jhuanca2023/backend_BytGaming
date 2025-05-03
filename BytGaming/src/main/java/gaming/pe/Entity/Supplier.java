@@ -8,29 +8,29 @@ import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 
-@Entity
-@Table(name = "suppliers")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class Supplier{
+    @Entity
+    @Table(name = "suppliers")
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public class Supplier{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
 
-    private String name;
+        private String name;
 
-    @Column(unique = true)
-    private String ruc;
+        @Column(unique = true)
+        private String ruc;
 
-    @Column(unique = true)
-    @Email
-    private String email;
+        @Column(unique = true)
+        @Email
+        private String email;
 
-    @Pattern(regexp = "\\d{9}", message = "El número de teléfono debe tener 9 dígitos")
-    @Column(unique = true)
-    private String phone;
+        @Pattern(regexp = "\\d{9}", message = "El número de teléfono debe tener 9 dígitos")
+        @Column(unique = true)
+        private String phone;
 
-    private Boolean isActive;
-}
+        private Boolean isActive;
+    }

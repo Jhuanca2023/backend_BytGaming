@@ -48,11 +48,12 @@ public class UserDetailServiceImpl implements UserDetailsService {
         //new SimpleGrantedAuthority("ROLE_" + userEntity.getRole().getRoleEnum().name()) ;
         //userEntity.getRole() .forEach(role -> authorityList.add(new SimpleGrantedAuthority("ROLE_".concat(role.getRoleEnum().name()))));
 
-//        userEntity.getRoles().stream().flatMap(role -> role.getPermissionList().stream()).forEach(permission -> authorityList.add(new SimpleGrantedAuthority(permission.getName())));
+        //        userEntity.getRoles().stream().flatMap(role -> role.getPermissionList().stream()).forEach(permission -> authorityList.add(new SimpleGrantedAuthority(permission.getName())));
 
 
         return new User(userEntity.getEmail(), userEntity.getPassword(), userEntity.isEnabled(), userEntity.isAccountNoExpired(), userEntity.isCredentialNoExpired(), userEntity.isAccountNoLocked(), authorityList);
     }
+
     public AuthResponseDto createUser(AuthCreateUserRequestDto request) throws BadRequestException {
         String email = request.email();
         String password = request.password();

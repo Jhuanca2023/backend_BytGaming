@@ -31,24 +31,17 @@ public class KardexController {
     }
 
     @PostMapping
-    public ResponseEntity<Kardex> create(@RequestBody KardexDTO dto) {
-        try {
-            Kardex created = service.create(dto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(created);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity<KardexDTO> create(@RequestBody KardexDTO dto) {
+        KardexDTO created = service.create(dto);
+        return ResponseEntity.ok(created);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Kardex> update(@PathVariable Long id, @RequestBody KardexDTO dto) {
-        try {
-            Kardex updated = service.update(id, dto);
-            return ResponseEntity.ok(updated);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+    public ResponseEntity<KardexDTO> update(@PathVariable Long id, @RequestBody KardexDTO dto) {
+        KardexDTO updated = service.update(id, dto);
+        return ResponseEntity.ok(updated);
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {

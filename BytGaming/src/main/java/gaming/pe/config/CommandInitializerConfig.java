@@ -72,12 +72,16 @@ public class CommandInitializerConfig implements CommandLineRunner {
             UserEntity admin = UserEntity.builder()
                     .email("admin@example.com")
                     .password(passwordEncoder.encode("admin123"))
+                    .name("Roger")
+                    .lastName("Concepción")
                     .role(adminRole)
                     .build();
-            UserEntity user1 = UserEntity.builder()
+            UserEntity admin2 = UserEntity.builder()
                     .email("user1@example.com")
                     .password(passwordEncoder.encode("admin123"))
-                    .role(userRole)
+                    .role(adminRole)
+                    .name("Jhon")
+                    .lastName("Rodriguez")
                     .build();
             UserEntity user2 = UserEntity.builder()
                     .email("user2@example.com")
@@ -86,7 +90,7 @@ public class CommandInitializerConfig implements CommandLineRunner {
                     .build();
 
             userRepository.save(admin);
-            userRepository.save(user1);
+            userRepository.save(admin2);
             userRepository.save(user2);
 
             System.out.println("Initial users created.");

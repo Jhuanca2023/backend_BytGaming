@@ -57,6 +57,8 @@ public class UserDetailServiceImpl implements UserDetailsService {
     public AuthResponseDto createUser(AuthCreateUserRequestDto request) throws BadRequestException {
         String email = request.email();
         String password = request.password();
+        String name = request.name();
+        String lastName = request.lastName();
 
         // El rol siempre debe ser USER
         RoleEnum defaultRoleEnum = RoleEnum.USER;
@@ -123,4 +125,18 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
         return new UsernamePasswordAuthenticationToken(email, password, userDetails.getAuthorities());
     }
+
+    public List<UserEntity> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public void deleteUser(Long id) {
+        Optional<UserEntity> optionalUser = userRepository.findById(id);
+        if (optionalUser.isEmpty()) {
+            throw new UsernameNotFoundException("Usuario con ID " + id + " no encontrado.");
+        }
+
+        userRepository.deleteById(id);
+    }
+
 }

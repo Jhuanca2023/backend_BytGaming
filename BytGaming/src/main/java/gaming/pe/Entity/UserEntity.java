@@ -1,5 +1,6 @@
 package gaming.pe.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import  lombok.*;
 import jakarta.persistence.*;
 
@@ -15,7 +16,12 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private  String name;
+
+    private  String lastName;
+
     @Column(unique = true)
+    @JsonIgnore
     private String password;
     private String email;
     @Column(name = "is_enabled")

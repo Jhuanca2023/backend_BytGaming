@@ -11,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -21,6 +22,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
     @Autowired
@@ -40,6 +42,7 @@ public class SecurityConfig {
                             "/api/products/**",
                             "/api/staff/**",
                             "/api/kardex/**",
+                            "/api/addresses/**",
                             "/swagger-ui/index.html","/auth/**","/").permitAll();
 
                     // EndPoints Privados
@@ -49,7 +52,8 @@ public class SecurityConfig {
                     http.requestMatchers(HttpMethod.PUT, "/method/put").hasAuthority("UPDATE");
 
                     http.requestMatchers("/api/cart/**").authenticated();
-
+                    http.requestMatchers("/api/orders/cart/**").authenticated();
+                    http.requestMatchers("/api/orders/**").authenticated();
                     http.anyRequest().denyAll();
                 })
                 .addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class)

@@ -23,24 +23,24 @@ public class UsersController {
     @Autowired
     private UserDetailServiceImpl userDetailService;
 
-    @PostMapping("/sign-up")
+    @PostMapping("/sign")
     public ResponseEntity<AuthResponseDto> register(@RequestBody @Valid AuthCreateUserRequestDto userRequest) throws BadRequestException {
         return new ResponseEntity<>(this.userDetailService.createUser(userRequest), HttpStatus.CREATED);
     }
 
-    @PostMapping("/log-in")
+    @PostMapping("/login")
     public ResponseEntity<AuthResponseDto> login(@RequestBody @Valid AuthLoginRequestDto userRequest){
         return new ResponseEntity<>(this.userDetailService.loginUser(userRequest), HttpStatus.OK);
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+   // @PreAuthorize("hasRole('ADMIN')")Z
     public List<UserEntity> listUsers() {
         return userDetailService.getAllUsers();
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public String deleteUser(@PathVariable Long id) {
         userDetailService.deleteUser(id);
         return "Usuario eliminado correctamente";

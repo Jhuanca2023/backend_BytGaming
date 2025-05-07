@@ -11,6 +11,8 @@ import gaming.pe.Repository.ProductRepository;
 import gaming.pe.Repository.StaffRepository;
 import gaming.pe.Repository.SupplierRepository;
 import gaming.pe.Service.IKardexService;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class KardexServiceImpl implements IKardexService {
 
     private final KardexRepository kardexRepository;
@@ -41,6 +44,27 @@ public class KardexServiceImpl implements IKardexService {
 
     @Override
     public KardexDTO create(KardexDTO dto) {
+        Product product = productRepository.findById(dto.getProductId())
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+        Integer currentStock = Optional.ofNullable(product.getUnits()).orElse(0);
+        Integer qty = dto.getQuantity();
+        Integer newStock;
+        switch (dto.getMovementType().toUpperCase()) {
+            case "ENTRADA":
+                newStock = currentStock + qty;
+                break;
+            case "SALIDA":
+                newStock = currentStock - qty;
+                if (newStock < 0) {
+                    throw new RuntimeException("Stock insuficiente. Stock actual: " + currentStock);
+                }
+                break;
+            default:
+                throw new RuntimeException("Tipo de movimiento inválido: " + dto.getMovementType());
+        }
+        product.setUnits(newStock);
+        productRepository.save(product);
+
         Kardex kardex = kardexMapper.toEntity(dto);
         kardex.setProduct(getProductById(dto.getProductId()));
         kardex.setProvider(getSupplierById(dto.getSupplierId()));
@@ -50,23 +74,25 @@ public class KardexServiceImpl implements IKardexService {
         return kardexMapper.toDto(saved);
     }
 
-
     @Override
     public KardexDTO update(Long id, KardexDTO dto) {
         Kardex existing = kardexRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Kardex no encontrado"));
-
-        // Actualizar campos desde el DTO
+                .orElseThrow(() -> new EntityNotFoundException("Kardex no encontrado"));
+        Product product = getProductById(dto.getProductId());
         kardexMapper.updateFromDto(dto, existing);
 
-        // Actualizar relaciones
-        existing.setProduct(getProductById(dto.getProductId()));
+        existing.setProduct(product);
         existing.setProvider(getSupplierById(dto.getSupplierId()));
         existing.setStaff(getStaffById(dto.getStaffId()));
 
+        product.setUnits(product.getUnits() - dto.getQuantity());
+        productRepository.save(product);
+
         Kardex updated = kardexRepository.save(existing);
+
         return kardexMapper.toDto(updated);
     }
+
 
     @Override
     public void delete(Long id) {

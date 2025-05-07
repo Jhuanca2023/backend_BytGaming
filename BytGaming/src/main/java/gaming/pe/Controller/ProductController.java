@@ -41,14 +41,26 @@ public class ProductController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Product> createProduct(
-            @RequestParam("product") String item,
-            @RequestParam("file") MultipartFile file) throws IOException {
+            @RequestParam("nameProduct") String nameProduct,
+            @RequestParam("description") String description,
+            @RequestParam("price") Double price,
+            @RequestParam("units") Integer units,
+            @RequestParam("isActive") Boolean isActive,
+            @RequestParam("categoryId") Long categoryId,
+            @RequestParam("file") MultipartFile file
+    ) {
         try {
-            // Convertimos el JSON a un objeto Book
-            ObjectMapper objectMapper = new ObjectMapper();
-            ProductCreateDTO productCreateDTO = objectMapper.readValue(item, ProductCreateDTO.class);
+            // Crear DTO con los datos recibidos del formulario
+            ProductCreateDTO dto = new ProductCreateDTO();
+            dto.setNameProduct(nameProduct);
+            dto.setDescription(description);
+            dto.setPrice(price);
+            dto.setUnits(units);
+            dto.setIsActive(isActive);
+            dto.setCategoryId(categoryId);
 
-            var result = productService.save(productCreateDTO, file);
+            // Llamar al servicio para guardar el producto
+            var result = productService.save(dto, file);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

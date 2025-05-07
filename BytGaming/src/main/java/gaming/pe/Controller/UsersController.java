@@ -4,6 +4,7 @@ package gaming.pe.Controller;
 import gaming.pe.DTO.Auth.AuthCreateUserRequestDto;
 import gaming.pe.DTO.Auth.AuthLoginRequestDto;
 import gaming.pe.DTO.Auth.AuthResponseDto;
+import gaming.pe.DTO.Auth.AuthUpdateUserRequestDto;
 import gaming.pe.Entity.UserEntity;
 import gaming.pe.Service.Impl.UserDetailServiceImpl;
 import jakarta.validation.Valid;
@@ -26,6 +27,17 @@ public class UsersController {
     @PostMapping("/sign")
     public ResponseEntity<AuthResponseDto> register(@RequestBody @Valid AuthCreateUserRequestDto userRequest) throws BadRequestException {
         return new ResponseEntity<>(this.userDetailService.createUser(userRequest), HttpStatus.CREATED);
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<AuthResponseDto> updateUser(@PathVariable Long id, @RequestBody AuthUpdateUserRequestDto request) {
+        try {
+            // Llamamos al servicio para actualizar el usuario
+            AuthResponseDto updatedUser = userDetailService.updateUser(id, request);
+            return ResponseEntity.ok(updatedUser); // Retorna una respuesta exitosa
+        } catch (Exception e) {
+            // Si ocurre un error, devolvemos una respuesta de error
+            return ResponseEntity.badRequest().body(new AuthResponseDto(null, e.getMessage(), null, false));
+        }
     }
 
     @PostMapping("/login")

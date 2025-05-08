@@ -74,3 +74,8 @@ spring:
           uri: http://localhost:8080
           predicates:
             - Path=/api/addresses/**
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG

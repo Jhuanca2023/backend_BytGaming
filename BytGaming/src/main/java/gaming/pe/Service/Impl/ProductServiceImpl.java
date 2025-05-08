@@ -72,32 +72,30 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product update(Long id, ProductCreateDTO dto, MultipartFile file) throws IOException {
-        // 1. Recuperar el producto existente o lanzar excepción
+
         Product existing = productRepository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("Producto no encontrado con id " + id)
-                );  // :contentReference[oaicite:6]{index=6}
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado con id " + id));
 
-        // 2. Mapear campos del DTO sobre la entidad existente
-        productMapper.updateFromDto(dto, existing);  // :contentReference[oaicite:7]{index=7}
 
-        // 3. Gestionar la imagen (eliminar anterior, subir nueva)
+        productMapper.updateFromDto(dto, existing);
+
+
         if (file != null && !file.isEmpty()) {
             if (existing.getImage() != null) {
-                imageService.deleteImage(existing.getImage());  // :contentReference[oaicite:8]{index=8}
+                imageService.deleteImage(existing.getImage());
             }
             Image newImage = imageService.uploadImage(file);
             existing.setImage(newImage);
         }
 
-        // 4. Asignar categoría actualizada
-        Category category = categoryRepository.findById(dto.getCategoryId())
-                .orElseThrow(() ->
-                        new RuntimeException("Categoría no encontrada con id " + dto.getCategoryId())
-                );  // :contentReference[oaicite:9]{index=9}
-        existing.setCategory(category);
+        // 4. Actualizar categoría si el ID fue proporcionado
+        if (dto.getCategoryId() != null) {
+            Category category = categoryRepository.findById(dto.getCategoryId())
+                    .orElseThrow(() -> new RuntimeException("Categoría no encontrada con id " + dto.getCategoryId()));
+            existing.setCategory(category);
+        }
 
-        // 5. Persistir cambios en la base de datos
-        return productRepository.save(existing);  // :contentReference[oaicite:10]{index=10}
+        // 5. Guardar cambios en la base de datos
+        return productRepository.save(existing);
     }
     }

@@ -5,6 +5,7 @@ import gaming.pe.Entity.Kardex;
 import gaming.pe.Entity.Product;
 import gaming.pe.Entity.Staff;
 import gaming.pe.Entity.Supplier;
+import gaming.pe.Enums.MovementType;
 import gaming.pe.Mappers.KardexMapper;
 import gaming.pe.Repository.KardexRepository;
 import gaming.pe.Repository.ProductRepository;
@@ -74,25 +75,73 @@ public class KardexServiceImpl implements IKardexService {
         return kardexMapper.toDto(saved);
     }
 
-    @Override
+    @Transactional
     public KardexDTO update(Long id, KardexDTO dto) {
         Kardex existing = kardexRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Kardex no encontrado"));
-        Product product = getProductById(dto.getProductId());
-        kardexMapper.updateFromDto(dto, existing);
 
-        existing.setProduct(product);
-        existing.setProvider(getSupplierById(dto.getSupplierId()));
-        existing.setStaff(getStaffById(dto.getStaffId()));
+        Product product = existing.getProduct();
+        Integer stock = Optional.ofNullable(product.getUnits()).orElse(0);
 
-        product.setUnits(product.getUnits() - dto.getQuantity());
+        // 1. Obtenemos los valores previos del Kardex existente
+        MovementType oldType = existing.getMovementType();
+        Integer oldQty = Optional.ofNullable(existing.getQuantity()).orElse(0);
+
+        // 2. Revertimos el movimiento anterior
+        if (oldType == MovementType.ENTRADA) {
+            stock -= oldQty;
+        } else if (oldType == MovementType.SALIDA) {
+            stock += oldQty;
+        }
+
+        // 3. Determinamos el nuevo tipo de movimiento y cantidad
+        // Si el DTO tiene el movimiento como String, lo convertimos a MovementType
+        MovementType newType = null;
+        if (dto.getMovementType() != null) {
+            try {
+                newType = MovementType.valueOf(dto.getMovementType().toUpperCase());
+            } catch (IllegalArgumentException e) {
+                throw new RuntimeException("Tipo de movimiento inválido: " + dto.getMovementType());
+            }
+        } else {
+            newType = oldType; // Si el movimiento no viene, usamos el anterior
+        }
+
+        Integer newQty = (dto.getQuantity() != null) ? dto.getQuantity() : oldQty;
+
+        // 4. Aplicamos el nuevo movimiento
+        if (newType == MovementType.ENTRADA) {
+            stock += newQty;
+        } else if (newType == MovementType.SALIDA) {
+            if (stock < newQty) {
+                throw new RuntimeException("Stock insuficiente. Stock actual: " + stock);
+            }
+            stock -= newQty;
+        } else {
+            throw new RuntimeException("Tipo de movimiento inválido: " + newType);
+        }
+
+        // 5. Actualizamos el stock del producto
+        product.setUnits(stock);
         productRepository.save(product);
 
+        // 6. Actualizamos los valores del Kardex con los datos del DTO
+        kardexMapper.updateFromDto(dto, existing);
+        existing.setProduct(product);
+
+        // 7. Establecemos el proveedor y el staff si están presentes
+        if (dto.getSupplierId() != null) {
+            existing.setProvider(getSupplierById(dto.getSupplierId()));
+        }
+        if (dto.getStaffId() != null) {
+            existing.setStaff(getStaffById(dto.getStaffId()));
+        }
+
+        // 8. Guardamos el Kardex actualizado
         Kardex updated = kardexRepository.save(existing);
 
         return kardexMapper.toDto(updated);
     }
-
 
     @Override
     public void delete(Long id) {

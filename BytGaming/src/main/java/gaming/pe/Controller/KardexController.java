@@ -8,8 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/kardex")
@@ -44,12 +43,17 @@ public class KardexController {
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Map<String,Object>> delete(@PathVariable Long id) {
         try {
             service.delete(id);
-            return ResponseEntity.noContent().build();
+            Map<String,Object> resp = new HashMap<>();
+            resp.put("deletedId", id);
+            resp.put("status",    "deleted");
+            return ResponseEntity.ok(resp);
         } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
+            // 404 con body opcional
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Collections.singletonMap("error", "No existe el producto con id " + id));
         }
     }
 }

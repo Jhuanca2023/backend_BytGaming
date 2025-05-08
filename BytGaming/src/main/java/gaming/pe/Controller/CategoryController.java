@@ -21,26 +21,26 @@ public class CategoryController {
 
     @GetMapping
     public ResponseEntity<List<Category>> getAllCategories() {
-        List<Category> categories = categoriaService.FindAll();  // Llamamos al service para obtener todas
+        List<Category> categories = categoriaService.FindAll();
         return ResponseEntity.ok(categories);
     }
 
-    // Obtener categoría por ID
+
     @GetMapping("/{id}")
     public ResponseEntity<Category> getCategoryById(@PathVariable Long id) {
-        Optional<Category> optional = categoriaService.FindById(id);  // Llamamos al service con ID
+        Optional<Category> optional = categoriaService.FindById(id);
         return optional.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());  // Si no la encontramos, retornamos notFound
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // Crear una nueva categoría
     @PostMapping
     public ResponseEntity<Category> createCategory(@RequestBody CategoryDTO categoryDTO) {
         try {
-            Category createdCategory = categoriaService.create(categoryDTO);  // Llamamos al service para crearla
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdCategory);  // Retornamos CREATED
+            Category createdCategory = categoriaService.create(categoryDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdCategory);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();  // Si hay error, BAD_REQUEST
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
@@ -48,10 +48,10 @@ public class CategoryController {
     @PutMapping("/{id}")
     public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody CategoryDTO categoryDTO) {
         try {
-            Category updatedCategory = categoriaService.update(id, categoryDTO);  // Llamamos al service para actualizar
-            return ResponseEntity.ok(updatedCategory);  // Retornamos OK con la categoría actualizada
+            Category updatedCategory = categoriaService.update(id, categoryDTO);
+            return ResponseEntity.ok(updatedCategory);
         } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();  // Si no encontramos la categoría, retornamos NOT_FOUND
+            return ResponseEntity.notFound().build();
         }
     }
 

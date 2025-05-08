@@ -4,6 +4,8 @@ server:
 spring:
   cloud:
     gateway:
+      csrf:
+        enabled: false
       globalcors:
         corsConfigurations:
           '[/**]':

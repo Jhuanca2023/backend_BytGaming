@@ -3,6 +3,7 @@ package gaming.pe.config;
 import gaming.pe.Service.Impl.UserDetailServiceImpl;
 import gaming.pe.config.jwt.JwtTokenValidator;
 import gaming.pe.config.jwt.JwtUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +15,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,7 +24,8 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
+@RequiredArgsConstructor
+@EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
 public class SecurityConfig {
 
     @Autowired
@@ -31,6 +34,7 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, AuthenticationProvider authenticationProvider) throws Exception {
         return httpSecurity
                 .csrf(csrf -> csrf.disable())
+
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(http -> {
                     // EndPoints publicos
@@ -56,7 +60,10 @@ public class SecurityConfig {
                     http.requestMatchers("/api/orders/**").authenticated();
                     http.anyRequest().denyAll();
                 })
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class)
+                .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .build();
     }
 
@@ -78,45 +85,4 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-
-        /*@Bean
-        public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, AuthenticationConfiguration authenticationConfiguration) throws Exception {
-            httpSecurity.csrf(AbstractHttpConfigurer::disable)
-                    .cors(Customizer.withDefaults())
-                    .authorizeHttpRequests(request -> request.requestMatchers(
-                                    "/v3/api-docs/**",
-                                    "/swagger-ui/**",
-                                    "/swagger-ui.html",
-                                    "/swagger-ui/index.html",
-                                    "/"
-                            ).permitAll()
-                            .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
-                            .requestMatchers("/user/**").hasAnyAuthority("USER")
-                            .requestMatchers("/adminuser/**").hasAnyAuthority("ADMIN", "USER")
-                            .anyRequest().authenticated())
-                    .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                    .authenticationProvider(authenticationProvider()).addFilterBefore(
-                            jwtAuthFilter, UsernamePasswordAuthenticationFilter.class
-                    );
-            return httpSecurity.build();
-
-        }
-
-        @Bean
-        public AuthenticationProvider authenticationProvider() {
-            DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-            daoAuthenticationProvider.setUserDetailsService(ourUserDetailsService);
-            daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-            return daoAuthenticationProvider;
-        }
-
-        @Bean
-        PasswordEncoder passwordEncoder() {
-            return new BCryptPasswordEncoder();
-        }
-
-        @Bean
-        public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-            return authenticationConfiguration.getAuthenticationManager();
-        }*/
     }

@@ -2,8 +2,6 @@ package gaming.pe.Entity;
 
 import jakarta.persistence.*;
 
-import java.util.List;
-
 
 @Entity
 public class Category {
@@ -11,7 +9,7 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nombre;
+    private String name;
     private String description;
 
     public Category() {
@@ -19,7 +17,7 @@ public class Category {
 
     public Category(Long id, String nombre, String description) {
         this.id = id;
-        this.nombre = nombre;
+        this.name = nombre;
         this.description = description;
     }
 
@@ -31,12 +29,12 @@ public class Category {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setName(String nombre) {
+        this.name = nombre;
     }
 
     public String getDescription() {

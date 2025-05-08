@@ -1,5 +1,5 @@
 server:
-  port: 8081   # Puerto donde corre el Gateway
+  port: 8081
 
 spring:
   cloud:
@@ -17,58 +17,58 @@ spring:
             allowedHeaders: "*"
             allowCredentials: true
       default-filters:
-        - StripPrefix=1    # Quita el primer segmento (/gateway/…) antes de reenviar
+        - StripPrefix=1
       routes:
-        # Autenticación: sign-up, log-in, listado y borrado de usuarios
+        # Autenticación:
         - id: auth
           uri: http://localhost:8080
           predicates:
-            - Path=/auth/**    # UsersController
+            - Path=/auth/**
 
-        # Carrito: crear, obtener, agregar, eliminar producto y vaciar
+        # Carrito:
         - id: cart
           uri: http://localhost:8080
           predicates:
-            - Path=/api/cart/**    # CartController
+            - Path=/api/cart/**
 
-        # Productos: CRUD completo + manejo de imágenes
+        # Productos:
         - id: products
           uri: http://localhost:8080
           predicates:
-            - Path=/api/products/**    # ProductController
+            - Path=/api/products/**
 
-        # Categorías: CRUD
+        # Categorías:
         - id: category
           uri: http://localhost:8080
           predicates:
-            - Path=/api/category/**    # CategoryController
+            - Path=/api/category/**
 
-        # Proveedores: CRUD
+        # Proveedores:
         - id: suppliers
           uri: http://localhost:8080
           predicates:
-            - Path=/api/suppliers/**   # SupplierController
+            - Path=/api/suppliers/**
 
-        # Staff: CRUD
+        # Staff:
         - id: staff
           uri: http://localhost:8080
           predicates:
-            - Path=/api/staff/**       # StaffController
+            - Path=/api/staff/**
 
-        # Kardex: CRUD de movimientos de inventario
+        # Kardex:
         - id: kardex
           uri: http://localhost:8080
           predicates:
-            - Path=/api/kardex/**      # KardexController
+            - Path=/api/kardex/**
 
-        # Órdenes: test, listar, detalle, crear desde carrito y eliminar
+        # Órdenes:
         - id: orders
           uri: http://localhost:8080
           predicates:
-            - Path=/api/orders/**      # OrderController
+            - Path=/api/orders/**
 
-        # Direcciones de usuario: CRUD
+        # Direcciones de usuario:
         - id: addresses
           uri: http://localhost:8080
           predicates:
-            - Path=/api/addresses/**   # UserAddressController
+            - Path=/api/addresses/**

@@ -90,13 +90,13 @@ public class ProductController {
         )
         public ResponseEntity<Product> updateProduct(
                 @PathVariable Long id,
-                @RequestParam("nameProduct") String nameProduct,
-                @RequestParam("description") String description,
-                @RequestParam("price") Double price,
-                @RequestParam("units") Integer units,
-                @RequestParam("isActive") Boolean isActive,
-                @RequestParam("categoryId") Long categoryId,
-                @RequestParam(value = "file", required = false) MultipartFile file
+                @RequestParam(value = "nameProduct",  required = false) String nameProduct,
+                @RequestParam(value = "description",  required = false) String description,
+                @RequestParam(value = "price",        required = false) Double price,
+                @RequestParam(value = "units",        required = false) Integer units,
+                @RequestParam(value = "isActive",     required = false) Boolean isActive,
+                @RequestParam(value = "categoryId",   required = false) Long categoryId,
+                @RequestParam(value = "file",         required = false) MultipartFile file
         ) {
             try {
                 // Crear DTO con los datos recibidos

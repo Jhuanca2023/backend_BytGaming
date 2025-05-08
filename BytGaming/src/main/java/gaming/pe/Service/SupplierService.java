@@ -14,7 +14,7 @@ public interface SupplierService {
 
     SupplierDTO save(SupplierDTO supplierDTO);
 
-    Supplier update(Long id, Supplier supplier);
+    SupplierDTO update(Long id, SupplierDTO dto);
 
     void delete(Long id);
 }

@@ -12,12 +12,17 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor
+
 @Service
 public class SupplierServiceImpl implements SupplierService {
 
     private final SupplierRepository supplierRepository;
     private final SupplierMapper mapper;
+
+    public SupplierServiceImpl(SupplierRepository supplierRepository, SupplierMapper mapper) {
+        this.supplierRepository = supplierRepository;
+        this.mapper = mapper;
+    }
 
     @Override
     public List<Supplier> findAll() {
@@ -36,16 +41,12 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public Supplier update(Long id, Supplier supplier) {
-        Supplier existing =findById(id);
-        existing.setName(supplier.getName());
-        existing.setRuc(supplier.getRuc());
-        existing.setEmail(supplier.getEmail());
-        existing.setPhone(supplier.getPhone());
-        existing.setIsActive(supplier.getIsActive());
-        return supplierRepository.save(existing);
+    public SupplierDTO update(Long id, SupplierDTO dto) {
+        Supplier existing = findById(id);
+        mapper.updateSupplierFromDto(dto, existing);
+        Supplier updated = supplierRepository.save(existing);
+        return mapper.toDTO(updated);
     }
-
     @Override
     public void delete(Long id) {
         supplierRepository.deleteById(id);

@@ -9,12 +9,16 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequiredArgsConstructor
+
 @RestController
 @RequestMapping("/api/suppliers")
 public class SupplierController {
 
     private final SupplierService service;
+
+    public SupplierController(SupplierService service) {
+        this.service = service;
+    }
 
     @GetMapping
     public ResponseEntity<List<Supplier>> findAll() {
@@ -33,8 +37,9 @@ public class SupplierController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Supplier> update(@PathVariable Long id, @RequestBody Supplier supplier) {
-        return ResponseEntity.ok(service.update(id, supplier));
+    public ResponseEntity<SupplierDTO> update(@PathVariable Long id, @RequestBody SupplierDTO dto) {
+        SupplierDTO updatedSupplier = service.update(id, dto);
+        return ResponseEntity.ok(updatedSupplier);
     }
 
     @DeleteMapping("/{id}")

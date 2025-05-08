@@ -40,11 +40,7 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-gateway</artifactId>
 		</dependency>
-		<!-- Seguridad JWT (opcional si validas tokens aquí) -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
+
 		<!-- Para procesar application.yml -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

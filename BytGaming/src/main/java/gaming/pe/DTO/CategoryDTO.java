@@ -5,14 +5,14 @@ package gaming.pe.DTO;
 
 public class CategoryDTO {
     private Long id;
-    private String nombre;
+    private String name;
     private String description;
 
     public CategoryDTO() {}
 
     public CategoryDTO(Long id, String nombre, String description) {
         this.id = id;
-        this.nombre = nombre;
+        this.name = nombre;
         this.description = description;
     }
 
@@ -24,12 +24,12 @@ public class CategoryDTO {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {

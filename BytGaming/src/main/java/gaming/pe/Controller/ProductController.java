@@ -21,10 +21,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/products")
-@RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
+
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
 
     @GetMapping
     public ResponseEntity<List<Product>> getAll() {
@@ -45,7 +48,7 @@ public class ProductController {
             @RequestParam("description") String description,
             @RequestParam("price") Double price,
             @RequestParam("units") Integer units,
-            @RequestParam("isActive") Boolean isActive,
+            @RequestParam(value = "isActive", required = false, defaultValue = "true") Boolean isActive,
             @RequestParam("categoryId") Long categoryId,
             @RequestParam("file") MultipartFile file
     ) {
@@ -81,34 +84,38 @@ public class ProductController {
         return ResponseEntity.ok(updatedProduct);
     }
 
-    @PutMapping(
-            value = "/{id}",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
-    )
-    public ResponseEntity<Product> updateProduct(
-            @PathVariable Long id,
-            @RequestParam("product") String item,
-            @RequestParam(value = "file", required = false) MultipartFile file
-    ) {
-        try {
-            // 1. Convertir el JSON a DTO
-            ObjectMapper objectMapper = new ObjectMapper();
-            ProductCreateDTO dto = objectMapper.readValue(item, ProductCreateDTO.class);
+        @PutMapping(
+                value = "/{id}",
+                consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+        )
+        public ResponseEntity<Product> updateProduct(
+                @PathVariable Long id,
+                @RequestParam("nameProduct") String nameProduct,
+                @RequestParam("description") String description,
+                @RequestParam("price") Double price,
+                @RequestParam("units") Integer units,
+                @RequestParam("isActive") Boolean isActive,
+                @RequestParam("categoryId") Long categoryId,
+                @RequestParam(value = "file", required = false) MultipartFile file
+        ) {
+            try {
+                // Crear DTO con los datos recibidos
+                ProductCreateDTO dto = new ProductCreateDTO();
+                dto.setNameProduct(nameProduct);
+                dto.setDescription(description);
+                dto.setPrice(price);
+                dto.setUnits(units);
+                dto.setIsActive(isActive);
+                dto.setCategoryId(categoryId);
 
-            // 2. Llamar al servicio de actualización (puede lanzar IOException)
-            Product updated = productService.update(id, dto, file);
+                // Llamar al servicio para actualizar el producto usando el ID
+                Product updatedProduct = productService.update(id, dto, file);
 
-            // 3. Devolver el producto actualizado
-            return ResponseEntity.ok(updated);
-
-        } catch (IOException e) {
-            // Error al procesar el archivo o JSON
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        } catch (RuntimeException e) {
-            // Por ejemplo, producto no encontrado o categoría inválida
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+                return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
+            } catch (Exception e) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
         }
-    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) throws IOException {

@@ -3,6 +3,7 @@ package gaming.pe.Controller;
 import gaming.pe.DTO.KardexDTO;
 import gaming.pe.Entity.Kardex;
 import gaming.pe.Service.IKardexService;
+import gaming.pe.Service.ServiceReport;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class KardexController {
     private final IKardexService service;
+    private final ServiceReport serviceReport;
 
     @GetMapping
     public ResponseEntity<List<Kardex>> getAll() {
@@ -54,6 +56,18 @@ public class KardexController {
             // 404 con body opcional
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(Collections.singletonMap("error", "No existe el producto con id " + id));
+        }
+    }
+
+    // NUEVO: Endpoint para generar reporte
+    @GetMapping("/report/{reportFormat}")
+    public ResponseEntity<String> getReport(@PathVariable String reportFormat) {
+        try {
+            String message = serviceReport.exportReport(reportFormat);
+            return ResponseEntity.ok(message);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error generating report: " + e.getMessage());
         }
     }
 }

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="empresary"
+              pageWidth="595"
+              pageHeight="842"
+              whenNoDataType="AllSectionsNoDetail"
+              columnWidth="555"
+              leftMargin="20"
+              rightMargin="20"
+              topMargin="20"
+              bottomMargin="20"
+              uuid="71104859-cb8c-436d-a51b-f60d990baf82">
+
+    <!-- Campos del entity Kardex -->
+    <field name="product" class="gaming.pe.Entity.Product"/>
+    <field name="quantity" class="java.lang.Integer"/>
+    <field name="movementType" class="gaming.pe.Enums.MovementType"/>
+    <field name="date" class="java.time.LocalDateTime"/>
+    <field name="cost" class="java.math.BigDecimal"/>
+    <field name="balance" class="java.lang.Integer"/>
+    <field name="provider" class="gaming.pe.Entity.Supplier"/>
+    <field name="staff" class="gaming.pe.Entity.Staff"/>
+
+    <!-- Título -->
+    <title>
+        <band height="60">
+            <staticText>
+                <reportElement x="0" y="10" width="555" height="40" uuid="f3a9c5bc-9d4f-4f58-a723-b7b96a9fdc1e"/>
+                <textElement textAlignment="Center">
+                    <font size="18" isBold="true"/>
+                </textElement>
+                <text><![CDATA[REPORTE DE MOVIMIENTOS - KARDEX]]></text>
+            </staticText>
+        </band>
+    </title>
+
+    <!-- Cabecera de columna -->
+    <columnHeader>
+        <band height="30">
+            <staticText>
+                <reportElement x="0" y="5" width="100" height="20"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Producto]]></text>
+            </staticText>
+
+            <staticText>
+                <reportElement x="100" y="5" width="50" height="20"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Cantidad]]></text>
+            </staticText>
+
+            <staticText>
+                <reportElement x="150" y="5" width="70" height="20"/>
+                <textElement textAlignment="Center">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Movimiento]]></text>
+            </staticText>
+
+            <staticText>
+                <reportElement x="220" y="5" width="100" height="20"/>
+                <textElement textAlignment="Center">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Fecha y Hora]]></text>
+            </staticText>
+
+            <staticText>
+                <reportElement x="320" y="5" width="60" height="20"/>
+                <textElement textAlignment="Center">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Costo]]></text>
+            </staticText>
+
+            <staticText>
+                <reportElement x="380" y="5" width="50" height="20"/>
+                <textElement textAlignment="Center">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Stock]]></text>
+            </staticText>
+
+            <staticText>
+                <reportElement x="430" y="5" width="100" height="20"/>
+                <textElement textAlignment="Center">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Proveedor]]></text>
+            </staticText>
+
+            <staticText>
+                <reportElement x="530" y="5" width="120" height="20"/>
+                <textElement textAlignment="Center">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Empleado]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+
+    <!-- Detalles -->
+    <detail>
+        <band height="30">
+            <textField>
+                <reportElement x="0" y="5" width="100" height="20"/>
+                <textElement textAlignment="Center"/>
+                <textFieldExpression><![CDATA[$F{product}.nameProduct]]></textFieldExpression>
+            </textField>
+
+            <textField>
+                <reportElement x="100" y="5" width="50" height="20"/>
+                <textElement textAlignment="Center"/>
+                <textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
+            </textField>
+
+            <textField>
+                <reportElement x="150" y="5" width="70" height="20"/>
+                <textElement textAlignment="Center"/>
+                <textFieldExpression><![CDATA[$F{movementType}]]></textFieldExpression>
+            </textField>
+
+            <textField pattern="dd/MM/yyyy HH:mm">
+                <reportElement x="220" y="5" width="100" height="20"/>
+                <textElement textAlignment="Center"/>
+                <textFieldExpression><![CDATA[$F{date}]]></textFieldExpression>
+            </textField>
+
+            <textField pattern="#,##0.00">
+                <reportElement x="320" y="5" width="60" height="20"/>
+                <textElement textAlignment="Center"/>
+                <textFieldExpression><![CDATA[$F{cost}]]></textFieldExpression>
+            </textField>
+
+            <textField>
+                <reportElement x="380" y="5" width="50" height="20"/>
+                <textElement textAlignment="Center"/>
+                <textFieldExpression><![CDATA[$F{balance}]]></textFieldExpression>
+            </textField>
+
+            <textField>
+                <reportElement x="430" y="5" width="100" height="20"/>
+                <textElement textAlignment="Center"/>
+                <textFieldExpression><![CDATA[$F{provider}.name]]></textFieldExpression>
+            </textField>
+
+            <textField>
+                <reportElement x="530" y="5" width="120" height="20"/>
+                <textElement textAlignment="Center"/>
+                <textFieldExpression><![CDATA[$F{staff}.name]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+
+    <!-- Pie de página -->
+    <pageFooter>
+        <band height="20">
+            <textField>
+                <reportElement x="0" y="0" width="555" height="20"/>
+                <textElement textAlignment="Right"/>
+                <textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageFooter>
+</jasperReport>

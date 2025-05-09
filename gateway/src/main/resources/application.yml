@@ -1,15 +1,13 @@
 server:
-  port: 8081
+  port: 8081  # El puerto en el que el Gateway se va a ejecutar
 
 spring:
   cloud:
     gateway:
-      csrf:
-        enabled: false
       globalcors:
         corsConfigurations:
-          '[/**]':
-            allowedOrigins: "http://localhost:4200"
+          '[/**]':  # Aplica CORS a todas las rutas
+            allowedOrigins: "http://localhost:4200"  # Permite solicitudes desde tu frontend
             allowedMethods:
               - GET
               - POST
@@ -18,59 +16,61 @@ spring:
               - OPTIONS
             allowedHeaders: "*"
             allowCredentials: true
-      default-filters:
-        - StripPrefix=1
+
+
+
+      # Definir las rutas de tus microservicios
       routes:
-        # Autenticación:
         - id: auth
-          uri: http://localhost:8080
+          uri: http://localhost:8080  # URL de tu microservicio de autenticación
           predicates:
             - Path=/auth/**
 
-        # Carrito:
-        - id: cart
-          uri: http://localhost:8080
-          predicates:
-            - Path=/api/cart/**
-
-        # Productos:
         - id: products
-          uri: http://localhost:8080
+          uri: http://localhost:8080  # Microservicio de productos
           predicates:
             - Path=/api/products/**
 
-        # Categorías:
         - id: category
-          uri: http://localhost:8080
+          uri: http://localhost:8080  # Microservicio de categorías
           predicates:
             - Path=/api/category/**
 
-        # Proveedores:
-        - id: suppliers
-          uri: http://localhost:8080
-          predicates:
-            - Path=/api/suppliers/**
-
-        # Staff:
-        - id: staff
-          uri: http://localhost:8080
-          predicates:
-            - Path=/api/staff/**
-
-        # Kardex:
-        - id: kardex
-          uri: http://localhost:8080
-          predicates:
-            - Path=/api/kardex/**
-
-        # Órdenes:
         - id: orders
-          uri: http://localhost:8080
+          uri: http://localhost:8080  # Microservicio de órdenes
           predicates:
             - Path=/api/orders/**
 
-        # Direcciones de usuario:
+        - id: cart
+          uri: http://localhost:8080  # Microservicio de carrito
+          predicates:
+            - Path=/api/cart/**
+        - id: kardex
+          uri: http://localhost:8080  # URL de tu microservicio de autenticación
+          predicates:
+            - Path=/api/kardex/**
+        - id: staff
+          uri: http://localhost:8080  # URL de tu microservicio de autenticación
+          predicates:
+            - Path=/api/staff/**
+        - id: staff
+          uri: http://localhost:8080  # URL de tu microservicio de autenticación
+          predicates:
+            - Path=/api/staff/**
+        - id: suppliers
+          uri: http://localhost:8080  # URL de tu microservicio de autenticación
+          predicates:
+            - Path=/api/suppliers/**
         - id: addresses
-          uri: http://localhost:8080
+          uri: http://localhost:8080  # URL de tu microservicio de autenticación
           predicates:
             - Path=/api/addresses/**
+        - id: addresses
+          uri: http://localhost:8080  # URL de tu microservicio de autenticación
+          predicates:
+            - Path=/api/addresses/**
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG  # Habilita los logs para ver el tráfico
+    org.springframework.web: DEBUG

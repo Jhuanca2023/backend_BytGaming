@@ -17,56 +17,53 @@ spring:
             allowedHeaders: "*"
             allowCredentials: true
 
-
-
-      # Definir las rutas de tus microservicios
       routes:
         - id: auth
-          uri: http://localhost:8080  # URL de tu microservicio de autenticación
+          uri: http://localhost:8080
           predicates:
             - Path=/auth/**
 
         - id: products
-          uri: http://localhost:8080  # Microservicio de productos
+          uri: http://localhost:8080
           predicates:
             - Path=/api/products/**
 
         - id: category
-          uri: http://localhost:8080  # Microservicio de categorías
+          uri: http://localhost:8080
           predicates:
             - Path=/api/category/**
 
         - id: orders
-          uri: http://localhost:8080  # Microservicio de órdenes
+          uri: http://localhost:8080
           predicates:
             - Path=/api/orders/**
 
         - id: cart
-          uri: http://localhost:8080  # Microservicio de carrito
+          uri: http://localhost:8080
           predicates:
             - Path=/api/cart/**
         - id: kardex
-          uri: http://localhost:8080  # URL de tu microservicio de autenticación
+          uri: http://localhost:8080
           predicates:
             - Path=/api/kardex/**
         - id: staff
-          uri: http://localhost:8080  # URL de tu microservicio de autenticación
+          uri: http://localhost:8080
           predicates:
             - Path=/api/staff/**
         - id: staff
-          uri: http://localhost:8080  # URL de tu microservicio de autenticación
+          uri: http://localhost:8080
           predicates:
             - Path=/api/staff/**
         - id: suppliers
-          uri: http://localhost:8080  # URL de tu microservicio de autenticación
+          uri: http://localhost:8080
           predicates:
             - Path=/api/suppliers/**
         - id: addresses
-          uri: http://localhost:8080  # URL de tu microservicio de autenticación
+          uri: http://localhost:8080
           predicates:
             - Path=/api/addresses/**
         - id: addresses
-          uri: http://localhost:8080  # URL de tu microservicio de autenticación
+          uri: http://localhost:8080
           predicates:
             - Path=/api/addresses/**
 

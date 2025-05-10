@@ -23,7 +23,7 @@ public class ServiceReport {
     @Autowired
     KardexRepository repository;
     public String exportReport(String reportFormat) throws Exception {
-        String path = "C:\\Users\\Usuario\\Downloads\\Jasper\\Reportes";
+        String path = "C:\\Users\\Erik\\Desktop\\Proyecto Spring\\Reportes";
         List<Kardex> repositoryAll = repository.findAll();
 
         File file;

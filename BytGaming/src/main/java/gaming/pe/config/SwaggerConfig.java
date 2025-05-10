@@ -13,7 +13,7 @@ import org.springframework.http.HttpHeaders;
 
 @OpenAPIDefinition(
         info = @Info(
-                title = "Ecomerse Gamer",
+                title = "Ecomerce Gamer",
                 description = "",
                 termsOfService = "",
                 version = "1.0.0",
@@ -23,7 +23,7 @@ import org.springframework.http.HttpHeaders;
                         email = ""
                 ),
                 license = @License(
-                        name = "Standard Apache License Version 2.0 for Fintech",
+                        name = "Ecomerce Gamer 2.0",
                         url = "https://www.apache.org/licenses/LICENSE-2.0",
                         identifier = "Apache-2.0"
                 )

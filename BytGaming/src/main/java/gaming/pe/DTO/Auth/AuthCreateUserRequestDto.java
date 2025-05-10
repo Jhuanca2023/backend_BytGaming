@@ -7,5 +7,6 @@ public record AuthCreateUserRequestDto(@NotBlank String email ,
                                        @NotBlank String password,
                                        @NotBlank String name,
                                        @NotBlank  String lastName,
-                                       @Valid AuthResponseRegisterDto roleRequest){
-        }
+                                       @Valid AuthResponseRegisterDto roleRequest)
+{
+}

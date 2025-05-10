@@ -129,6 +129,8 @@ public class UserDetailServiceImpl implements UserDetailsService {
         UserEntity userEntity = UserEntity.builder()
                 .email(email)
                 .password(passwordEncoder.encode(password))
+                .name(name)
+                .lastName(lastName)
                 .role(role)
                 .isEnabled(true)
                 .accountNoLocked(true)

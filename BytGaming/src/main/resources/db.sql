@@ -1,6 +1,6 @@
 USE bygaming;
 
-INSERT INTO category (id, description, nombre) VALUES
+INSERT INTO category (id, description, name) VALUES
 (1, 'Consolas de videojuegos como PlayStation, Xbox, y Nintendo Switch', 'Consolas'),
 (2, 'Accesorios gamer como teclados, mouses, headsets y mandos', 'Accesorios'),
 (3, 'Juegos físicos y digitales para diversas plataformas', 'Juegos'),

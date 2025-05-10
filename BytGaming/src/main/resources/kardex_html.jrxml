@@ -92,7 +92,7 @@
                 <textElement textAlignment="Center" verticalAlignment="Middle">
                     <font isBold="true"/>
                 </textElement>
-                <text><![CDATA[Stock]]></text>
+                <text><![CDATA[RUC]]></text>
             </staticText>
 
             <staticText>

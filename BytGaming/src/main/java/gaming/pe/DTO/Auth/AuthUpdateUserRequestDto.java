@@ -7,7 +7,7 @@ public record AuthUpdateUserRequestDto(
         String password,
         String name,
         String lastName,
-        RoleEnum role // Si deseas incluir la opción de actualizar el rol
+        RoleEnum role
 )
 {
 
